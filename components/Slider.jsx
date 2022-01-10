@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Image from 'next/image';
 
 // styles
@@ -7,24 +8,42 @@ import styles from '../styles/Slider.module.css';
 
  
 const Slider =() => {
+	const [ index, setIndex ] = useState(0);
+	console.log(index);
+	
 	const images = [
-		"/images/featured1-cropped.png",
+		"/images/featured4-cropped.png",
 		"/images/featured2-cropped.png",
-		"/images/featured3-cropped.png"
+		"/images/featured1-cropped.png"
 	];
+	
+	const handleArrow = (direction) => {
+		if (direction === 'l') {
+			setIndex(index !== 0 ? index - 1 : 2);
+		}
+		if (direction === 'r') {
+			setIndex(index !== 2 ? index + 1 : 0);
+		}
+	};
 	
 	
 	
 	return (
 		<div className={styles.container}>
-			<div className={styles.arrowContainer} style={{left:0}}>
+			<div className={styles.arrowContainer} style={{left:0}} onClick={() => handleArrow('l')}>
 				<Image 
 					src="/images/arrowl.png" 
 					alt="" 
-					layout="fill" 
+					layout="fill"
+					objectFit="contain"
 				/>
 			</div>
-			<div className={styles.wrapper}>
+			<div 
+				className={styles.wrapper}
+				style={{
+					transform:`translateX(${-100 * index}vw)`
+				}}
+			>
 				
 				{images.map((image, index) => (
 					<div className={styles.imgContainer} key={index}>
@@ -32,18 +51,19 @@ const Slider =() => {
 							className={styles.sliderImg} 
 							src={image} 
 							alt="" 
-							width="540"
-							height="380"
+							layout="fill"
+							objectFit="contain"
 						/>
 					</div>
 				))}
 				
 			</div>
-			<div className={styles.arrowContainer} style={{right: 0}}>
+			<div className={styles.arrowContainer} style={{right: 0}} onClick={() => handleArrow('r')}>
 				<Image 
 					src="/images/arrowr.png" 
 					alt="" 
 					layout="fill"
+					objectFit="contain"
 				/>
 			</div>
 		</div>
